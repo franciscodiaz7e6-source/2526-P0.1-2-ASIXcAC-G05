@@ -684,7 +684,7 @@ FACILIDAD ROLLBACK: Trivial (1 comando)
 
 ### 3.1 Docker Compose: Orquestación Local
 
-#### Concepto: Definir Stack Completo en YAML
+#### Concepto: Definir Stack Completo en YAML (EJEMPLO NO FINAL, SOLO ES UNA IDEA)
 
 ```yaml
 # docker-compose.yml (Para desarrollo + Sprint 1-2)
