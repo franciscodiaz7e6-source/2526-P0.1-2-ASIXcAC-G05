@@ -1350,24 +1350,6 @@ URL: https://docs.docker.com/get-started/
 [2] **Docker Compose Documentation**  
 URL: https://docs.docker.com/compose/
 
-[3] **Docker Networking Guide**  
-URL: https://docs.docker.com/network/
-
-[4] **Docker Best Practices**  
-URL: https://docs.docker.com/develop/dev-best-practices/
-
-[5] **AWS ECS - Container Orchestration**  
-URL: https://docs.aws.amazon.com/ecs/
-
-[6] **Dockerfile Reference**  
-URL: https://docs.docker.com/engine/reference/builder/
-
-[7] **Linux Namespaces and cgroups**  
-URL: https://man7.org/linux/man-pages/man7/namespaces.7.html
-
-[8] **Docker Performance Tuning**  
-URL: https://docs.docker.com/config/containers/resource_constraints/
-
 ---
 
 Documento elaborado por: Ingeniero DevOps y Arquitecto de Infraestructura
