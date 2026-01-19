@@ -5,9 +5,8 @@
 ## TABLA DE CONTENIDOS
 
 1. [Anatomía y Arquitectura de MySQL](#1-anatomía-y-arquitectura-de-mysql-80)
-2. [Análisis Comparativo: MySQL vs PostgreSQL vs MongoDB](#2-análisis-comparativo-mysql-vs-postgresql-vs-mongodb)
-3. [Funcionalidades Críticas para Extagram](#3-funcionalidades-críticas-para-extagram)
-4. [Conclusión Técnica y Viabilidad en AWS](#4-conclusión-técnica-y-viabilidad-en-aws)
+2. [Funcionalidades Críticas para Extagram](#2-funcionalidades-críticas-para-extagram)
+3. [Conclusión Técnica y Viabilidad en AWS](#3-conclusión-técnica-y-viabilidad-en-aws)
 
 ***
 
@@ -283,228 +282,9 @@ RESULTADO: OOM (Out of Memory)
 
 ***
 
-## 2. ANÁLISIS COMPARATIVO: MYSQL VS POSTGRESQL VS MONGODB
+## 2 FUNCIONALIDADES CRÍTICAS PARA EXTAGRAM
 
-### 2.1 Tabla Comparativa Directa
-
-| Factor | MySQL 8.0 | PostgreSQL 15 | MongoDB 6.0 | Mejor para Extagram |
-|--------|-----------|---------------|------------|-------------------|
-| Modelo Datos | Relacional (tablas) | Relacional (tablas) | Documental (JSON) | MySQL |
-| Arquitectura | Threads (1 proceso) | Procesos (N procesos) | Documental | MySQL |
-| Memoria/conexión | 1-2 MB | 8-10 MB | Variable | MySQL |
-| ACID Nativo | InnoDB sí | Sí | Requiere config | MySQL/PostgreSQL |
-| Foreign Keys | Enforced | Enforced | No soportado | MySQL/PostgreSQL |
-| Conexiones viables t3.micro | 500+ | 100-200 | 50-100 | MySQL |
-| Curva aprendizaje | Baja | Media | Baja | MySQL |
-| Documentación | Excelente | Excelente | Buena | Empate |
-| AWS Free Tier | RDS 12 meses | RDS 12 meses | Atlas (pago) | MySQL/PostgreSQL |
-| Costo operacional anual | $ | $$ | $$$ | MySQL |
-| Viabilidad Proyecto ASIX | Excelente | Buena | Problemas | MySQL |
-
-***
-
-### 2.2 MySQL vs PostgreSQL: Análisis Detallado de Recursos
-
-#### Consumo de Memoria en Inactividad (Idle)
-
-```
-SERVIDOR IDLE (sin transacciones activas):
-
-MySQL 8.0:
-├─ Proceso principal: ~50 MB
-├─ Thread pool (10 threads cached): ~15 MB
-├─ InnoDB Buffer Pool: ~128 MB (configurable)
-├─ Estructura de datos: ~10 MB
-└─ TOTAL: ~203 MB
-
-
-PostgreSQL 15:
-├─ Proceso postmaster: ~30 MB
-├─ BGWriter + AutoVacuum: ~20 MB
-├─ Shared Buffers: ~128 MB
-├─ Página caché SO (menos controlado): ~200 MB
-└─ TOTAL: ~378 MB
-
-
-Conclusión: MySQL gasta MENOS memoria en estado idle
-└─ Diferencia: 175 MB (86% más en PostgreSQL)
-└─ En t3.micro de 1 GB: diferencia crítica
-```
-
-***
-
-#### Consumo bajo Carga (Workload Real)
-
-```
-ESCENARIO: 1000 queries/segundo, 100 conexiones simultáneas
-
-MySQL 8.0 bajo carga:
-├─ Base: 203 MB
-├─ Conexiones: 100 × 1.2 MB = 120 MB
-├─ Query cache (eliminado v8.0): 0 MB
-├─ Buffer Pool + datos activos: 150 MB
-├─ TOTAL: ~473 MB
-├─ CPU: 35-40% (eficiente)
-└─ Estado: Normal, margen de 527 MB libre
-
-
-PostgreSQL 15 bajo carga:
-├─ Base: 378 MB
-├─ Procesos nuevos: 100 × 8 MB = 800 MB
-├─ Shared Buffers + caché: 150 MB
-├─ Trabajo memory: 100 MB
-├─ TOTAL: ~1,428 MB
-├─ CPU: 55-70% (saturado)
-└─ Estado: OOM (Out of Memory) - CRASH
-```
-
-**Para t3.micro (1 GB RAM)**:
-- MySQL: Cómodo, puede manejar 500+ conexiones concurrentes
-- PostgreSQL: Apenas llega a 100 conexiones antes de problemas
-
-***
-
-#### Replicación: MySQL vs PostgreSQL
-
-| Aspecto | MySQL | PostgreSQL |
-|--------|-------|-----------|
-| Método de replicación | Binary Logs (asincrónico) | WAL (Write-Ahead Log) |
-| Complejidad setup | Simple (5-7 pasos) | Complejo (herramientas externas) |
-| Overhead de red | Mínimo (~1-2% CPU) | Medio (~5% CPU) |
-| Velocidad de sincronización | Rápida (ms) | Más lenta (seconds) |
-| Failover automático | Manual (requiere herramientas) | Manual (requiere herramientas) |
-| Documentación | Excelente | Buena |
-| PITR (Point In Time Recovery) | Binlog + backup | WAL + backup |
-
-**Para Extagram**: Replicación MySQL es más directa, mejor documentada y con menos overhead.
-
-***
-
-### 2.3 MySQL vs MongoDB: Relacional vs Documental
-
-#### Modelo Conceptual: Diferencias Fundamentales
-
-```
-EXTAGRAM DATA MODEL:
-
-OPCIÓN 1: Relacional (MySQL - NORMALIZADO)
-
-Tabla users:
-┌────┬──────────┬──────────────────┐
-│ id │ username │ email            │
-├────┼──────────┼──────────────────┤
-│ 1  │ juan     │ juan@example.com │
-│ 2  │ maria    │ maria@example.com│
-└────┴──────────┴──────────────────┘
-
-Tabla posts:
-┌────┬─────────┬──────────────────┬────────────────────────┐
-│ id │ user_id │ post_text        │ created_at             │
-├────┼─────────┼──────────────────┼────────────────────────┤
-│ 1  │ 1       │ Mi primera foto  │ 2026-01-12 10:00:00   │
-│ 2  │ 2       │ Hola mundo       │ 2026-01-12 10:30:00   │
-└────┴─────────┴──────────────────┴────────────────────────┘
-
-GARANTÍA: Foreign key user_id=1 solo puede referencia usuario existente
-QUERY: SELECT u.username, p.post_text FROM users u JOIN posts p 
-       ON u.id = p.user_id
-VENTAJA: Integridad forzada, imposible datos huérfanos
-
-
-OPCIÓN 2: Documental (MongoDB - DESNORMALIZADO)
-
-Colección posts_collection:
-{
-  "_id": ObjectId("507f1f77bcf86cd799439011"),
-  "username": "juan",           ← Datos del usuario COPIADOS
-  "user_id": ObjectId("507f1f77bcf86cd799439001"),
-  "post_text": "Mi primera foto",
-  "created_at": ISODate("2026-01-12T10:00:00Z"),
-  "comments": [
-    { "user": "maria", "text": "Bonita!", "created": "2026-01-12T10:15:00Z" }
-  ],
-  "likes": ["user2_id", "user3_id"]
-}
-
-PROBLEMA 1: Si usuario cambia username "juan" → "javier"
-  ├─ ¿Actualizamos en todos los posts? (1000+ documentos)
-  ├─ ¿Dejamos inconsistencia?
-  └─ RIESGO: Data integrity problems
-
-PROBLEMA 2: Si eliminamos usuario, ¿qué pasa con posts?
-  ├─ Si borramos referencia, post queda huérfano
-  ├─ Si borramos post, perdemos historial
-  └─ RIESGO: Decisión complicada sin FK
-
-PROBLEMA 3: Sin ACID transacciones:
-  ├─ Si falla actualización a mitad, inconsistencia
-  └─ RIESGO: Estado corrupto sin recovery
-```
-
-***
-
-#### Riesgos de MongoDB en Servidor Pequeño
-
-| Riesgo | Descripción | Impacto en Extagram |
-|--------|-----------|-------------------|
-| Consumo RAM alto | MongoDB mantiene todo en memoria por default | t3.micro (1 GB) → capacidad muy limitada |
-| No ACID nativo | Requiere aplicación + código extra | Bugs de integridad de datos |
-| Datos huérfanos | Sin foreign keys, posts sin usuario | Data quality degradada |
-| Queries complejas | Agregaciones menos optimizadas | Rendimiento degradado |
-| Scaling vertical | Crece muy rápido en RAM con datos | Necesita upgrade de instancia rápidamente |
-| Replicación compleja | Replica sets más complicado que MySQL | DevOps overhead |
-
-***
-
-#### Ejemplo Real: El Problema de MongoDB
-
-```javascript
-// MongoDB: Usuario sube foto
-db.posts.insertOne({
-  _id: ObjectId(),
-  user_id: "user123",
-  username: "juan",
-  photo_url: "/uploads/photo1.jpg",
-  created_at: new Date()
-});
-
-// Semanas después: Usuario decide cambiar username "juan" → "javier"
-db.users.updateOne(
-  { _id: "user123" }, 
-  { $set: { username: "javier" } }
-);
-
-// PROBLEMA: ¿Qué pasa con los 50 posts que dicen "juan"?
-// 
-// Opción A: Siguen diciendo "juan" (INCONSISTENCIA)
-// Opción B: Actualizar todos con updateMany (LENTO, RIESGO)
-// Opción C: Aplicación resuelve en cada query (BUGS, OVERHEAD)
-
-
-// En MySQL (RELACIONAL):
-// Username está EN LA TABLA USERS
-// Posts solo tiene user_id (FK)
-// Actualizar nombre: UPDATE users SET username = 'javier'
-// Resultado: INSTANTÁNEO, CONSISTENTE en todos los posts
-```
-
-***
-
-### 2.4 Conclusión Comparativa para Extagram
-
-Basado en análisis técnico exhaustivo:
-
-| Base de Datos | Recomendación | Justificación |
-|---------------|---------------|---------------|
-| MySQL 8.0 | **ELEGIDA - RECOMENDADO** | Ideal t3.micro, ACID, relaciones claras, bajo costo |
-| PostgreSQL 15 | Posible pero no óptima | Más RAM, más CPU, overkill para esta escala |
-| MongoDB 6.0 | No recomendada | Riesgos de integridad, consumo RAM, overkill |
-
-***
-
-## 3. FUNCIONALIDADES CRÍTICAS PARA EXTAGRAM
-
-### 3.1 Replicación Maestro-Esclavo (Master-Slave)
+### 2.1 Replicación Maestro-Esclavo (Master-Slave)
 
 #### Concepto Fundamental
 
@@ -704,7 +484,7 @@ VENTAJA: NO pierdes horas de datos
 
 ***
 
-### 3.2 Gestión de Integridad: Foreign Keys
+### 2.2 Gestión de Integridad: Foreign Keys
 
 #### Problema Sin Foreign Keys
 
@@ -768,7 +548,7 @@ INSERT INTO posts VALUES (NULL, 9999, 'Fantasma');
 
 ***
 
-#### Opciones de Foreign Key: Qué Hacer Al Eliminar
+#### Opciones de Foreign Key: Qué Hacer Al Eliminar un usuario
 
 ```sql
 OPCIÓN 1: ON DELETE CASCADE (Eliminar en cascada)
@@ -802,44 +582,6 @@ DELETE FROM users WHERE user_id = 1;
 
 ***
 
-#### Esquema Propuesto: Integridad Total para Extagram
-
-```sql
-CREATE TABLE users (
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_username (username)
-);
-
-
-CREATE TABLE posts (
-    post_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    post_text TEXT NOT NULL,
-    photo_url VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    INDEX idx_user_id (user_id),
-    INDEX idx_created_at (created_at)
-);
-
-
-CREATE TABLE photos (
-    photo_id INT PRIMARY KEY AUTO_INCREMENT,
-    post_id INT NOT NULL,
-    filename VARCHAR(255) NOT NULL,
-    mime_type VARCHAR(50),
-    file_size INT,
-    storage_path VARCHAR(255),
-    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-    INDEX idx_post_id (post_id)
-);
-
-
 GARANTÍAS LOGRADAS:
 ├─ No puede haber post sin usuario (FK enforced)
 ├─ Si eliminas usuario, posts se eliminan automáticamente (CASCADE)
@@ -850,7 +592,7 @@ GARANTÍAS LOGRADAS:
 
 ***
 
-### 3.3 Backups Lógicos: mysqldump
+### 2.3 Backups Lógicos: mysqldump
 
 #### Concepto
 
@@ -911,7 +653,7 @@ mysqldump -u root -p -h 10.0.4.5 extagram_db > /backups/extagram_2026-01-12.sql
    - Si cambias 1 MB en BD de 100 MB, respalda 100 MB
    - Para Extagram: Aceptable
 
-**Para Extagram (aplicación pequeña)**: mysqldump es PERFECTO.
+**Para Extagram (aplicación pequeña)**: mysqldump es perfecta
 
 ***
 
@@ -972,9 +714,9 @@ mysql -u root -p -e "SELECT COUNT(*) as total_posts FROM extagram_db.posts;"
 
 ***
 
-## 4. CONCLUSIÓN TÉCNICA Y VIABILIDAD EN AWS
+## 3. CONCLUSIÓN TÉCNICA Y VIABILIDAD EN AWS
 
-### 4.1 Por Qué MySQL es la Elección Correcta
+### 3.1 Por Qué MySQL es la Elección Correcta
 
 | Criterio | Justificación Técnica |
 |----------|----------------------|
@@ -990,7 +732,7 @@ mysql -u root -p -e "SELECT COUNT(*) as total_posts FROM extagram_db.posts;"
 
 ***
 
-### 4.2 Arquitectura Recomendada: S7 en Extagram
+### 3.2 Arquitectura Recomendada: S7 en Extagram
 
 ```
 S7: SERVIDOR MYSQL (AWS t3.micro, 1 GB RAM, 1 vCPU)
@@ -1035,68 +777,318 @@ Monitoreo en Producción:
 ├─ Logs: MySQL audit log + error log
 └─ Health checks: Ping cada 60 segundos desde S2/S3/S4
 ```
+## 4.EVOLUCIÓN DE BASE DE DATOS: EXTAGRAM
 
-***
+## SPRINT 1: MVP - ESTRUCTURA INICIAL
 
-### 4.3 Comparativa Final: Viabilidad en t3.micro (1 GB RAM)
+### Creación de Base de Datos
 
-```
-ESCENARIO: 1000 usuarios activos, 100 conexiones simultáneas, peak ocasional 200
-
-
-OPCIÓN 1: MySQL 8.0 (ELEGIDA)
-├─ Memoria base: 375 MB
-├─ Conexiones 100: 100 × 1.2 MB = 120 MB
-├─ Datos en Buffer Pool: 150 MB
-├─ TOTAL: 645 MB
-├─ Margen disponible: 1000 - 645 = 355 MB
-├─ Capacidad peak 200 conexiones: 795 MB (cabe)
-├─ CPU: 30-40% normal, 60-70% peak
-├─ Estado: VIABLE CON MARGEN GENEROSO
-└─ Recomendación: USAR MYSQL
+CREATE DATABASE extagram_db;
+CREATE USER 'extagram_admin'@'%' IDENTIFIED BY 'pass123';
+GRANT ALL PRIVILEGES ON extagram_db.* TO 'extagram_admin'@'%';
+FLUSH PRIVILEGES;
 
 
-OPCIÓN 2: PostgreSQL 15
-├─ Memoria base: 578 MB
-├─ Conexiones 100: 100 × 8 MB = 800 MB
-├─ Datos en shared buffers: 150 MB
-├─ TOTAL: 1528 MB
-├─ Margen disponible: 1000 - 1528 = -528 MB
-├─ RESULTADO: OOM (Out of Memory) a los 100 conexiones
-├─ CPU: 55-70% normal, 100% saturado peak
-├─ Estado: NO VIABLE EN t3.micro
-└─ Recomendación: NO USAR (upgrade a t3.small mínimo)
+### Tabla: posts (MVP)
 
+CREATE TABLE extagram_db.posts (
+    post TEXT,
+    photourl TEXT
+);
 
-OPCIÓN 3: MongoDB 6.0
-├─ Memoria base: 400 MB
-├─ Datasets en memoria: 600 MB (setting por default)
-├─ Índices: 200 MB
-├─ TOTAL: 1200 MB
-├─ Margen: 1000 - 1200 = -200 MB
-├─ RESULTADO: OOM, degradación performance
-├─ CPU: 70-80% normal, 100% peak
-├─ Estado: MARGINAL, NO RECOMENDADO
-└─ Recomendación: NO USAR (overhead innecesario)
+**Estructura Inicial**:
+| Campo | Tipo | Descripción | Limitaciones |
+|-------|------|-------------|--------------|
+| `post` | TEXT | Texto del caption/descripción | Max 65,535 caracteres |
+| `photourl` | TEXT | URL relativa o absoluta a foto | Path en `/uploads` o CDN |
 
+**Problemas Identificados**:
+- Sin `post_id` (no hay identificador único)
+- Sin timestamps (no se sabe cuándo se creó)
+- Sin relación a usuario (quién publicó)
+- Sin metadatos de archivo (nombre, MIME type, tamaño)
+- Sin índices (queries lentos)
 
-VEREDICTO FINAL:
-════════════════════════════════════════════════════════
-MySQL 8.0 es la MEJOR y ÚNICA opción viable
-para t3.micro con aplicación de escala Extagram.
+---
 
-Ventajas:
-├─ 5x menos memoria que PostgreSQL
-├─ 350 MB margen para picos de tráfico
-├─ ACID garantizado sin overhead
-├─ Replicación simple (binlog)
-├─ Free tier AWS 12 meses
-├─ Stack probado 25+ años
-└─ Escalable a servidores mayores si crece
+## SPRINT 2-3: EXPANSIÓN RECOMENDADA
 
-Conclusión: USAR MYSQL 8.0 EN S7
-════════════════════════════════════════════════════════
-```
+### Tabla: users (Autores)
+
+CREATE TABLE extagram_db.users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_username (username),
+    INDEX idx_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+**Campos**:
+| Campo | Tipo | Descripción | Justificación |
+|-------|------|-------------|---------------|
+| `user_id` | INT AUTO_INCREMENT | Identificador único | PK para relaciones |
+| `username` | VARCHAR(50) UNIQUE | Nombre de usuario | Búsquedas frecuentes |
+| `email` | VARCHAR(100) UNIQUE | Email de contacto | Autenticación, recuperación |
+| `password_hash` | VARCHAR(255) | Hash bcrypt/argon2 | Nunca plaintext |
+| `created_at` | TIMESTAMP | Fecha creación | Auditoría |
+| `updated_at` | TIMESTAMP | Fecha última modificación | Tracking cambios |
+
+---
+
+### Tabla: posts (Expandida)
+
+CREATE TABLE extagram_db.posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    caption TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    likes_count INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+**Cambios Principales**:
+| Campo (MVP) | Campo (Expandido) | Cambio | Razón |
+|-------------|-------------------|--------|-------|
+| - | `post_id` | NUEVO | Identificador único, relaciones |
+| - | `user_id` | NUEVO | Quién publicó (FK a users) |
+| `post` | `caption` | RENOMBRADO | Semántica más clara |
+| - | `created_at` | NUEVO | Ordenar cronológicamente |
+| - | `updated_at` | NUEVO | Ediciones posteriores |
+| - | `likes_count` | NUEVO | Estadísticas rápidas |
+
+**Relación**: 
+- 1 usuario -> N posts (1:N)
+- DELETE CASCADE: si se borra usuario, se borran sus posts
+
+---
+
+### Tabla: media (Metadatos de Archivos)
+
+CREATE TABLE extagram_db.media (
+    media_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    extension VARCHAR(10),
+    mime_type VARCHAR(50),
+    original_name VARCHAR(255),
+    file_size BIGINT,
+    file_blob LONGBLOB,
+    storage_path VARCHAR(512),
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+    INDEX idx_post_id (post_id),
+    INDEX idx_uploaded_at (uploaded_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+**Estructura Completa**:
+| Campo | Tipo | Descripción | Ejemplo |
+|-------|------|-------------|---------|
+| `media_id` | INT AUTO_INCREMENT | Identificador único | 1, 2, 3... |
+| `post_id` | INT FK | Referencia a post | Relación 1:N |
+| `filename` | VARCHAR(255) | Nombre generado (hash) | `a1b2c3d4e5f6.jpg` |
+| `extension` | VARCHAR(10) | Extensión del archivo | `jpg`, `png`, `mp4` |
+| `mime_type` | VARCHAR(50) | Tipo MIME registrado | `image/jpeg`, `video/mp4` |
+| `original_name` | VARCHAR(255) | Nombre original del usuario | `mi_foto_vacaciones.jpg` |
+| `file_size` | BIGINT | Tamaño en bytes | 2097152 (2 MB) |
+| `file_blob` | LONGBLOB | Binario del archivo (opcional) | Datos JPEG/PNG comprimidos |
+| `storage_path` | VARCHAR(512) | Ruta en /uploads o S3 | `/uploads/2026/01/a1b2c3d4e5f6.jpg` |
+| `uploaded_at` | TIMESTAMP | Fecha carga | 2026-01-19 16:00:00 |
+
+**Decisiones de Diseño**:
+
+1. **LONGBLOB vs Path**: 
+   - ✅ Recomendado: `storage_path` (NFS/S3) + `filename`
+   - ⚠️ Alternativa: `file_blob` en BD (solo para archivos < 1 MB)
+   - Extagram: Usar `storage_path` en Sprint 2, opcional `file_blob` para thumbnails
+
+2. **Timestamps**:
+   - Facilita pruning de archivos antiguos
+   - Útil para analytics ("picos de upload")
+
+3. **MIME type verification**:
+   - Previene uploads maliciosos
+   - Validación en PHP antes de INSERT
+
+---
+
+## EVOLUCIÓN: DIAGRAMA ENTIDAD-RELACIÓN
+
+┌─────────────┐
+│   users     │
+├─────────────┤
+│ user_id(PK) │
+│ username    │
+│ email       │
+│ password    │
+│ created_at  │
+└─────────────┘
+       │
+       │ 1:N (user_id FK)
+       ▼
+┌─────────────────┐
+│     posts       │
+├─────────────────┤
+│ post_id(PK)     │
+│ user_id(FK)     │ ◄─── Relación a usuarios
+│ caption         │
+│ created_at      │
+│ likes_count     │
+└─────────────────┘
+       │
+       │ 1:N (post_id FK)
+       ▼
+┌──────────────────┐
+│     media        │
+├──────────────────┤
+│ media_id(PK)     │
+│ post_id(FK)      │ ◄─── Relación a posts
+│ filename         │
+│ mime_type        │
+│ file_blob        │
+│ storage_path     │
+│ uploaded_at      │
+└──────────────────┘
+
+**Características**:
+- Normalización 3FN (Third Normal Form)
+- Foreign keys con CASCADE delete
+- Índices en FK y campos de búsqueda frecuente
+
+---
+
+## MIGRACION: SPRINT 1 → SPRINT 2
+
+### SQL Migration Script
+
+-- Backup de datos Sprint 1
+CREATE TABLE extagram_db.posts_backup_v1 AS SELECT * FROM posts;
+
+-- Crear tabla users
+CREATE TABLE extagram_db.users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_username (username),
+    INDEX idx_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Insertar usuario "admin" de migración
+INSERT INTO extagram_db.users (username, email, password_hash) 
+VALUES ('admin', 'admin@extagram.local', SHA2('pass123', 256));
+
+-- Recrear tabla posts con nuevas columnas
+CREATE TABLE extagram_db.posts_v2 (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    caption TEXT,
+    photourl TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    likes_count INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    INDEX idx_user_id (user_id),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Migrar datos: asignar posts al usuario admin
+INSERT INTO extagram_db.posts_v2 (user_id, caption, photourl)
+SELECT 1, post, photourl FROM posts_backup_v1;
+
+-- Renombrar tablas
+RENAME TABLE posts TO posts_v1;
+RENAME TABLE posts_v2 TO posts;
+
+-- Crear tabla media
+CREATE TABLE extagram_db.media (
+    media_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    extension VARCHAR(10),
+    mime_type VARCHAR(50),
+    original_name VARCHAR(255),
+    file_size BIGINT,
+    storage_path VARCHAR(512),
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+    INDEX idx_post_id (post_id),
+    INDEX idx_uploaded_at (uploaded_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+**Pasos**:
+1. Backup de datos originales
+2. Crear tabla `users` con usuario admin
+3. Recrear `posts` con nuevas columnas
+4. Migrar datos existentes a nuevo schema
+5. Crear tabla `media` con metadatos
+
+---
+
+## USUARIO BASE DE DATOS: PRIVILEGIOS LIMITADOS
+
+### Usuario de Aplicación (Recomendado para Sprint 2+)
+
+-- Usuario con permisos limitados (principle of least privilege)
+CREATE USER 'app_user'@'%' IDENTIFIED BY 'secure_password_123';
+
+-- Permisos: SELECT, INSERT, UPDATE (NO DROP, ALTER)
+GRANT SELECT, INSERT, UPDATE, DELETE ON extagram_db.posts TO 'app_user'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON extagram_db.users TO 'app_user'@'%';
+GRANT SELECT, INSERT, UPDATE ON extagram_db.media TO 'app_user'@'%';
+
+FLUSH PRIVILEGES;
+
+**Ventajas**:
+- ✅ App no puede hacer DROP TABLE
+- ✅ App no puede hacer ALTER (cambiar schema)
+- ✅ Firewall a nivel BD (SQL injection limitado)
+- ✅ Separación admin (extagram_admin) vs app (app_user)
+
+---
+
+## CHECKLIST: VALIDACION MODELO DATOS
+
+Estructura Sprint 1:
+- [ ] Base de datos creada: `extagram_db`
+- [ ] Usuario: `extagram_admin` con ALL PRIVILEGES
+- [ ] Tabla: `posts` con columnas (post, photourl)
+
+Estructura Sprint 2+:
+- [ ] Tabla: `users` con PK, índices, timestamps
+- [ ] Tabla: `posts` expandida con FK a users
+- [ ] Tabla: `media` con metadatos archivo (MIME, tamaño, path)
+- [ ] Foreign keys funcionando (CASCADE delete)
+- [ ] Índices en campos de búsqueda (username, created_at)
+
+Seguridad:
+- [ ] Usuario `app_user` creado con permisos limitados
+- [ ] `extagram_admin` separado de `app_user`
+- [ ] No plaintext passwords (usar SHA2, bcrypt)
+- [ ] Charset UTF8MB4 para soporte Unicode
+
+Performance:
+- [ ] Índices creados en FK y campos frecuentes
+- [ ] ENGINE=InnoDB para transacciones
+- [ ] Latencia SELECT < 5ms (sin full table scan)
+
+---
+
+## ROADMAP FUTURO (Sprint 4+)
+
+| Sprint | Mejora | Impacto |
+|--------|--------|---------|
+| **Sprint 2-3** | Tablas users, media, índices | Relaciones, metadatos |
+| **Sprint 4** | Replicación master-slave (S7, S7b) | HA (alta disponibilidad) |
+| **Sprint 5** | Sharding por user_id | Horizontal scaling |
+| **Sprint 6+** | Cache Redis, ElasticSearch | Performance queries |
 
 ***
 
