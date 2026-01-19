@@ -2,16 +2,16 @@
 
 ## **_Información General_**
 
-**Codi / Nom del sprint:** Sprint 1 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
-**Dates del sprint:** 16 de des. del 2025 15:00 - 19 de gen. del 2026 15:00 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
+**Codi / Nom del sprint:** Sprint 1 
+**Dates del sprint:** 16 de des. del 2025 15:00 - 19 de gen. del 2026 15:00 
 
-**Data:** 16 de des. del 2025 15:00 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
-**Reunió:** Sprint Review [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
+**Data:** 16 de des. del 2025 15:00 
+**Reunió:** Sprint Review 
 
 **Assistents:**  
-- [erick [itb] garcía badaraco](mailto:erick.garcia.7e8@itecbcn.com) [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
-- [francisco [itb] diaz encalada](mailto:francisco.diaz.7e6@itecbcn.com) [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
-- [Adrià Montero Sánchez](mailto:adria.montero.7e5@itb.cat) [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
+- [erick [itb] garcía badaraco](mailto:erick.garcia.7e8@itecbcn.com) 
+- [francisco [itb] diaz encalada](mailto:francisco.diaz.7e6@itecbcn.com) 
+- [Adrià Montero Sánchez](mailto:adria.montero.7e5@itb.cat) 
 
 ## **_Objectiu del Sprint_**
 
