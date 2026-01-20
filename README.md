@@ -1,72 +1,64 @@
-# Proyecto 2526-P0.1-2-ASIXcAC-G05
+# 2526-P0.1-2-ASIXcAC-G05
+
+## **Descripción del Proyecto**
+
+**Despliegue de una red en la nube para Extagram**, aplicación PHP de publicación de imágenes. 
+
+La arquitectura **garantiza alta disponibilidad, escalabilidad y seguridad** mediante integración de servicios web y bases de datos en entorno interconectado. 
+
+**Curso:** ASIXcAC-G05 (2025-2026) - Institut Tecnològic de Barcelona  
+**Equipo:** Adrià Montero Sánchez, Erick García Badaraco, Francisco Díaz Encalada
+
+## **Objetivos Principales**
+
+1. **Desplegar Extagram en nube** con alta disponibilidad 
+2. **Escalabilidad horizontal** mediante microservicios/CDN 
+3. **Seguridad integral** (autenticación, ModSecurity, VLANs) 
+4. **Gestión ágil** vía ProofHub Sprints 
+
+## **Tabla de Contenidos del Repositorio**
+
+| Carpeta/Archivo | Descripción | Enlace Directo |
+|-----------------|-------------|----------------|
+| **📋 `/actas/`** | Actas Sprint Review | [Ver actas →](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/tree/main/actas) |
+| `/actas/Acta-Sprint1-16dic2025.md` | Acta inicial Sprint 1 | [Abrir](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/actas/Acta-Sprint1-16dic2025.md) |
+| `/actas/Acta-Sprint1-19ene2026.md` | Acta cierre Sprint 1 | [Abrir](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/actas/Acta-Sprint1-19ene2026.md) |
+| **📚 `/docs/`** | Documentación técnica | [Ver docs →](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/tree/main/docs) |
+| `/docs/Estudio-del-mercado.md` | **Análisis competitivo completo** (Instagram/Flickr/etc.) | [Abrir](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/docs/Estudio-del-mercado.md)  |
+| `/docs/Arbol-Documentacion.md` | Estructura documentación | [Abrir](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/docs/Arbol-Documentacion.md) |
+| **📊 `/diagrams/`** | Gráficos de mercado | [Ver diagramas →](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/tree/main/diagrams) |
+| `/diagrams/diagramadepastel.png` | **Diagrama pastel distribución mercado** | [Ver imagen](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/diagrams/diagramadepastel.png) |
+| `/diagrams/Comparativa...2026.png` | **Comparativa usuarios/engagement 2026** | [Ver imagen](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/diagrams/Comparativa_de_usuarios_activos_mensuales_y_nivel_de_engagement_por_plataforma_(2026).png) |
+| **📁 `/diagrams/media/adria/`** | Archivos adicionales Adria | [Ver carpeta →](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/tree/main/diagrams/media/adria) |
+| **💻 `/src/`** | Código fuente Extagram | [Ver src →](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/tree/main/src) |
+| **⚙️ `/config/`** | Configuraciones | [Ver config →](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/tree/main/config) |
 
 
-## **_Descripción del Proyecto_**
+## **Arquitectura Técnica**
 
-El proyecto corresponde a la documentacion sobre las actas de reuniones, enfocado en análisis previo, definición de roles, arquitectura de red, configuración de herramientas colaborativas (ProofHub, GitHub) y estructura de documentación en Markdown.
+```
+Extagram (NGINX + PHP-FPM + MySQL)
+├── CDN Global (imágenes)
+├── Microservicios (posts/timeline)
+├── Redis (caché)
+├── Alta disponibilidad (multi-región)
+└── ProofHub (gestión ágil)
+```
 
-**Equipo de desarrollo:**
-- Adrià Montero Sánchez (adria.montero.7e5@itb.cat)
-- Erick García Badaraco (erick.garcia.7e8@itecbcn.com)
-- Francisco Díaz Encalada (francisco.diaz.7e6@itecbcn.com)
+**Competencia analizada:** Instagram (3B usuarios), Flickr, 500px, Imgur, Google Photos 
+## **Próximos Objetivos**
 
-**Sprint 1 (16 dic 2025 - 19 ene 2026):** Planificación inicial, backlog en ProofHub y setup de infraestructura técnica. 
+- ✅ Setup inicial completado
+- 🔄 Diseño arquitectura/red
+- ⏳ Desarrollo Extagram escalable
+- 📈 Integración nube/CDN
 
-*Sprint 2 (-- --- ---- - -- --- ----):**
+## **Recursos Externos**
 
-*Sprint 3 (-- --- ---- - -- --- ----):**
-
-
-## **_Enlaces Directos_**
-
-### **📋 Documentación Principal**
-- [Estudio del Mercado (Completo)](/docs/Estudio-del-mercado.md) - Análisis competitivo Instagram/Flickr/etc. 
-- [Acta Sprint 1 - 16/12/2025](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/actas/Acta-Sprint1-16dic2025.md) 
-- [Acta Sprint 1 - 19/01/2026](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/actas/Acta-Sprint1-19ene2026.md)
-
-### **📊 Gráficos y Diagramas**
-- [Diagrama de Pastel - Distribución Mercado](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/diagrams/diagramadepastel.png)
-- [Comparativa Usuarios 2026](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/blob/main/diagrams/Comparativa_de_usuarios_activos_mensuales_y_nivel_de_engagement_por_plataforma_(2026).png)
-- [Media Adria](/diagrams/media/adria/)
-
-### **🔗 Herramientas Externas**
-- [ProofHub - Backlog Sprint 1](https://itecbcn.proofhub.com/bapplite/#app/todos/project-9429692256/list-270270720757)
-- [Sprint Planning Tareas](https://itecbcn.proofhub.com/bapplite/#app/todos/project-9429692256/list-270270720757)
-
-## **_Estado del Proyecto (Sprint 1)_**
-
-| Tarea | Estat | Propietari |
-|-------|--------|------------|
-| 1.1 Reunión Sprint Planning | Terminada | Equipo completo |
-| 1.2 Definición Roles | Terminada | Equipo completo |
-| 1.3 Análisis Requisitos | En curs | Equipo completo |
-| 1.4 Diseño Arquitectura | En curs | Erick |
-| 1.5 Config ProofHub | Terminada | Equipo completo |
-| 1.6 Repo GitHub | Terminada | Erick/Francisco |
-| 1.7 Protocolo Reuniones | Terminada | Adrià |
-| 1.8 Árbol Documentación | Terminada | Equipo completo  [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf) |
-
-**Feedback Docente:** Formato actas aprobado. Añadir títulos descriptivos a tareas. 
-
-## **_Tecnologías y Stack_**
-
-- **Gestión Proyecto:** ProofHub, GitHub
-- **Documentación:** Markdown, GitHub Pages
-- **Infraestructura:** NGINX, PHP-FPM, MySQL (extagram base)
-- **Análisis:** Diagramas PNG, tablas comparativas
-
-## **_Próximos Pasos (Sprint 2)_**
-- Completar análisis requisitos P0.1
-- Implementar arquitectura de red
-- Desarrollar prototipo inicial
-- Actualizar backlog ProofHub
-
-## **_Contacto_**
-- **ProofHub Project:** [#9429692256](https://itecbcn.proofhub.com/bapplite/#app/todos/project-9429692256)
-- **Issues:** [Abrir Issue](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/issues/new)
+- [ProofHub Backlog](https://itecbcn.proofhub.com/bapplite/#app/todos/project-9429692256/list-270270720757) 
+- [Issues GitHub](https://github.com/franciscodiaz7e6-source/2526-P0.1-2-ASIXcAC-G05/issues)
+- [Estudio Mercado Completo](/docs/Estudio-del-mercado.md) 
 
 ***
 
-**¡Gracias por visitar nuestro proyecto ASIXcAC-G05!** 🚀 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/128276454/0640ee09-58e8-4038-a149-ba18477da9df/Plantilla-de-Acta.pdf)
-
-*Última actualización: Enero 2026* [reddit](https://www.reddit.com/r/MSRITians/comments/1bxya3r/contribute_github_repositories/)
+**Proyecto académico ASIXcAC-G05 -  Enero 2026** 
