@@ -5,41 +5,24 @@
 ## ESTRUCTURA DE CARPETAS (INICIAL)
 
 ```
-extagram-initial/
+docker/
 ├── docker-compose.yml
-├── .env
-│
-├── app/
-│   ├── index.php
-│   ├── health.php
-│   ├── config.php
-│   ├── api/
-│   │   ├── posts.php
-│   │   └── upload.php
-│   ├── public/
-│   │   ├── css/
-│   │   │   └── style.css
-│   │   ├── js/
-│   │   │   └── app.js
-│   │   └── images/
-│   │       └── logo.png
-│   └── storage/
-│       └── uploads/
-│
-├── config/
-│   ├── nginx/
-│   │   └── nginx.conf
-│   ├── php/
-│   │   ├── php.ini
-│   │   └── www.conf
-│   └── mysql/
-│       ├── my.cnf
-│       └── init.sql
-│
-├── logs/
-│   ├── nginx/
-│   ├── php-fpm/
-│   └── mysql/
-│
-└── README.md
+├── nginx/
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   └── default.conf
+├── php-app/
+│   ├── Dockerfile
+│   ├── extagram.php
+│   └── upload.php
+├── storage/
+│   ├── Dockerfile
+│   └── (volumen para /images)
+├── static/
+│   ├── style.css
+│   └── preview.svg
+├── uploads/
+│   └── (volumen para fotos)
+└── mysql/
+    └── init.sql
 ```
