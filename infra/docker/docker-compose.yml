@@ -1,0 +1,120 @@
+version: '3.9'
+
+services:
+  # S1: NGINX Proxy (Público)
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: extagram-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static-volume:/static:ro
+      - uploads-volume:/uploads:ro
+    depends_on:
+      - php-app-1
+      - php-app-2
+      - upload-service
+      - storage-service
+    networks:
+      - extagram-net
+    restart: unless-stopped
+
+  # S2: PHP-FPM App 1 (Privada)
+  php-app-1:
+    build:
+      context: ./php-app
+      dockerfile: Dockerfile
+    container_name: extagram-php-1
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=extagram_admin
+      - DB_PASS=pass123
+      - DB_NAME=extagram_db
+    volumes:
+      - app-volume:/app
+    depends_on:
+      - mysql
+    networks:
+      - extagram-net
+    restart: unless-stopped
+
+  # S3: PHP-FPM App 2 (Privada - Redundancia)
+  php-app-2:
+    build:
+      context: ./php-app
+      dockerfile: Dockerfile
+    container_name: extagram-php-2
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=extagram_admin
+      - DB_PASS=pass123
+      - DB_NAME=extagram_db
+    volumes:
+      - app-volume:/app
+    depends_on:
+      - mysql
+    networks:
+      - extagram-net
+    restart: unless-stopped
+
+  # S4: Upload Service (Privada)
+  upload-service:
+    build:
+      context: ./php-app
+      dockerfile: Dockerfile
+    container_name: extagram-upload
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=extagram_admin
+      - DB_PASS=pass123
+      - DB_NAME=extagram_db
+    volumes:
+      - app-volume:/app
+      - uploads-volume:/uploads
+    depends_on:
+      - mysql
+    networks:
+      - extagram-net
+    restart: unless-stopped
+
+  # S5: Static Service (Privada)
+  storage-service:
+    image: nginx:alpine
+    container_name: extagram-storage
+    volumes:
+      - static-volume:/static:ro
+      - uploads-volume:/uploads:ro
+    networks:
+      - extagram-net
+    restart: unless-stopped
+
+  # S6: Static Files (Privada)
+  # (Integrado en nginx:alpine arriba)
+
+  # S7: MySQL Database (Privada)
+  mysql:
+    image: mysql:8.0
+    container_name: extagram-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: extagram_db
+      MYSQL_USER: extagram_admin
+      MYSQL_PASSWORD: pass123
+    volumes:
+      - mysql-volume:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - extagram-net
+    restart: unless-stopped
+
+volumes:
+  app-volume:
+  uploads-volume:
+  static-volume:
+  mysql-volume:
+
+networks:
+  extagram-net:
+    driver: bridge
