@@ -159,7 +159,7 @@ Recomendado: t2.small (2GB RAM, 1 vCPU)
 Si necesitas mayor capacidad: t2.medium o superior
 
 <div align="center">
-  <img src="../../media/erick/ec2_type_instance.png" alt="Seleccion de tipo de instancia" width="600">
+  <img src="../../media/erick/ec2_type_instance.png" alt="Seleccion de tipo de instancia">
 </div>
 
 ### Paso 4: Configurar Detalles de Instancia
@@ -171,10 +171,6 @@ En seccion "Instance details":
 - Subnet: default subnet (dejar como esta)
 - Auto-assign public IP: Enable (importante para acceso remoto)
 - IAM instance profile: Sin cambios
-
-<div align="center">
-  <img src="../../media/erick/aws_instance_details.png" alt="Detalles de configuracion de instancia" width="600">
-</div>
 
 ### Paso 5: Configurar Almacenamiento
 
@@ -226,7 +222,7 @@ Regla 3 (HTTPS):
 - Source: 0.0.0.0/0 (cualquiera)
 
 <div align="center">
-  <img src="../../media/media/erick/ec2_reglas_seguridad.png" alt="Configuracion de grupo de seguridad" width="600">
+  <img src="../../media/erick/ec2_reglas_seguridad.png" alt="Configuracion de grupo de seguridad">
 </div>
 
 ### Paso 8: Revisar y Lanzar
