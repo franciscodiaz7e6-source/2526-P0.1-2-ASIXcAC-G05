@@ -14,16 +14,16 @@ services:
     
     volumes:
       # Configuración nginx (read-only)
-      - ../../../../../../src/web/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ../../../../../../src/web/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../../../src/web/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../../../src/web/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       # Archivos de configuración en /src/web
       
       # Aplicación PHP (read-only)
-      - ../../../../../../src/web/php-app:/app:ro     
+      - ../../../src/web/php-app:/app:ro     
       # Nginx sirve extagram.php desde aquí
 
       # Archivos estáticos
-      - ../../../../../../src/web/php-app/static:/static:ro
+      - ../../../src/web/php-app/static:/static:ro
       # CSS, SVG, imágenes disponibles
       
       # Uploads
@@ -60,7 +60,7 @@ services:
     # Variables para conectar a MySQL
     
     volumes:
-      - ../../../../../../src/web/php-app:/app:ro
+      - ../../../src/web/php-app:/app:ro
     # Código PHP leído desde ../src/ (read-only)
     
     depends_on:
@@ -89,7 +89,7 @@ services:
     # Variables para conectar a MySQL
     
     volumes:
-      - ../../../../../../src/web/php-app:/app:ro
+      - ../../../src/web/php-app:/app:ro
     # Código PHP leído desde ../src/ (read-only)
     
     depends_on:
@@ -118,7 +118,7 @@ services:
     # Variables para conectar a MySQL
     
     volumes:
-      - ../../../../../../src/web/php-app:/app:ro
+      - ../../../src/web/php-app:/app:ro
       # Ejecuta upload.php
       
       - ./volumes/uploads:/uploads:rw
@@ -141,7 +141,7 @@ services:
     container_name: ${STORAGE_CONTAINER}
     
     volumes:
-      - ../../../../../../src/web/static:/static:ro
+      - ../../../src/web/static:/static:ro
       # CSS, SVG, preview (read-only)
       
       - ./volumes/uploads:/uploads:ro
@@ -170,7 +170,7 @@ services:
       - mysql-volume:/var/lib/mysql
       # Volumen persistente (datos NO se pierden)
       
-      -../../../../../../src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./../../src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       # Script SQL inicial (solo si BD vacía)
     
     networks:
