@@ -215,12 +215,6 @@ Regla 2 (HTTP):
 - Port range: 80
 - Source: 0.0.0.0/0 (cualquiera)
 
-Regla 3 (HTTPS):
-- Type: HTTPS
-- Protocol: TCP
-- Port range: 443
-- Source: 0.0.0.0/0 (cualquiera)
-
 <div align="center">
   <img src="../../media/erick/ec2_reglas_seguridad.png" alt="Configuracion de grupo de seguridad">
 </div>
