@@ -10,8 +10,9 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static-volume:/static:ro
-      - uploads-volume:/uploads:ro
+      - ./php-app:/app:ro
+      - ./static:/static:ro
+      - ./uploads:/uploads:ro
     depends_on:
       - php-app-1
       - php-app-2
