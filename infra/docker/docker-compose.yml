@@ -14,16 +14,16 @@ services:
     
     volumes:
       # Configuración nginx (read-only)
-      - ../../../web/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ../../../web/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../../../src/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../../../src/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       # Archivos de configuración en ../web/
       
       # Aplicación PHP (read-only)
-      - ../../../web/php-app:/app:ro     
+      - ../../../src/php-app:/app:ro     
       # Nginx sirve extagram.php desde aquí
 
       # Archivos estáticos
-      - ../../../web/static:/static:ro
+      - ../../../src/static:/static:ro
       # CSS, SVG, imágenes disponibles
       
       # Uploads
@@ -60,8 +60,8 @@ services:
     # Variables para conectar a MySQL
     
     volumes:
-      - ../../../web/php-app:/app:ro
-    # Código PHP leído desde ../web/ (read-only)
+      - ../../../src/php-app:/app:ro
+    # Código PHP leído desde ../src/ (read-only)
     
     depends_on:
       - mysql
@@ -89,8 +89,8 @@ services:
     # Variables para conectar a MySQL
     
     volumes:
-      - ../../../web/php-app:/app:ro
-    # Código PHP leído desde ../web/ (read-only)
+      - ../../../src/php-app:/app:ro
+    # Código PHP leído desde ../src/ (read-only)
     
     depends_on:
       - mysql
@@ -118,7 +118,7 @@ services:
     # Variables para conectar a MySQL
     
     volumes:
-      - ../../../web/php-app:/app:ro
+      - ../../../src/php-app:/app:ro
       # Ejecuta upload.php
       
       - ./volumes/uploads:/uploads:rw
@@ -141,7 +141,7 @@ services:
     container_name: ${STORAGE_CONTAINER}
     
     volumes:
-      - ../../../web/static:/static:ro
+      - ../../../src/static:/static:ro
       # CSS, SVG, preview (read-only)
       
       - ./volumes/uploads:/uploads:ro
