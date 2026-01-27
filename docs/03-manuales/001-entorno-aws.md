@@ -1,7 +1,5 @@
 # Manual de Preparacion del Entorno AWS EC2 para Docker
 
-Version 1.0 - Enero 2026
-
 ---
 
 ## Indice
@@ -145,7 +143,7 @@ Para Ubuntu:
 - Click en seleccionar
 
 <div align="center">
-  <img src="../../media/media/erick/ec2_instancia_selection.png" alt="Seleccion de Amazon Machine Image" width="600">
+  <img src="../../media/erick/ec2_image_machine.png" alt="Seleccion de Amazon Machine Image">
 </div>
 
 ### Paso 3: Seleccionar Tipo de Instancia
@@ -233,7 +231,7 @@ Regla 2 (HTTP):
 
 Aparecera ventana "Select key pair":
 
-- Seleccionar "extagram-key" (creado anteriormente)
+- Seleccionar "vockey" (de ser necesario crear una previamente)
 - Marcar checkbox "I acknowledge..."
 - Click en "Launch instances" (naranja)
 
@@ -253,7 +251,7 @@ Anotar la siguiente informacion:
 Esperar 2-3 minutos a que la instancia este completamente iniciada.
 
 <div align="center">
-  <img src="../../media/media/erick/" alt="Listas de Instancias disponibles" width="600">
+  <img src="../../media/erick/ec2_instances_view.png" alt="Listas de Instancias disponibles">
 </div>
 
 ---
@@ -306,7 +304,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 ```
 
 <div align="center">
-  <img src="../../media/erick/" alt="Conexion SSH exitosa" width="600">
+  <img src="../../media/erick/ssh_connection_complete.png" alt="Conexion SSH exitosa">
 </div>
 
 Mensaje esperado despues de conectar:
