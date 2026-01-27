@@ -1,7 +1,5 @@
 # Manual de Creacion de Extagram con Docker - Estructura Manual
 
-Version 1.0 - Enero 2026
-
 ---
 
 ## Indice
@@ -14,6 +12,11 @@ Version 1.0 - Enero 2026
 6. [Configuracion de Base de Datos](#configuracion-de-base-de-datos)
 7. [Iniciando los Servicios](#iniciando-los-servicios)
 8. [Verificacion y Testing](#verificacion-y-testing)
+
+---
+# Introducción
+
+Antes de empezar con Extagram, necesitas tener Docker y Docker Compose instalados en tu server. La instalacion toma aproximadamente 5-10 minutos. Una vez finalizado, verifica que todo funciona ejecutando `docker run hello-world`. Si ves el mensaje "Hello from Docker!", estan listos para comenzar con el proyecto.
 
 ---
 
