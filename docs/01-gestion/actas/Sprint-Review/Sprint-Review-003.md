@@ -1,8 +1,8 @@
-# **_Acta de Sprint Review - Sprint 1_**
+# **_Acta de Sprint Review - Sprint 2_**
 
 ## **_Información General_**
 
-**Codi / Nom del sprint:** Sprint 1 
+**Codi / Nom del sprint:** Sprint 2 
 **Dates del sprint:** 16 de des. del 2025 15:00 - 19 de gen. del 2026 15:00 
 
 **Data:** 16 de des. del 2025 15:00 
