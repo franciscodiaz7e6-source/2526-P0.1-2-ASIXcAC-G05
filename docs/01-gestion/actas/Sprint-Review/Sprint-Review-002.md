@@ -42,7 +42,8 @@
 - El formato del acta fue aceptado y se usará en el resto del proyecto 
 
 ### **Millores proposades:**
-- Escribir el título de cada tarea, además de su nombre. 
+- Escribir el título de cada tarea, además de su nombre.
+- Base de datos fuera.
 
 **Captura de pantalla del Proofhub:**  
 - Backlog del proofhub (16/12/25) 
@@ -54,3 +55,4 @@
 - Accions pendents 2 
 
 ***
+
