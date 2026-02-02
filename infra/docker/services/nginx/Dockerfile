@@ -6,9 +6,6 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-COPY extagram.php /app/
-COPY upload.php /app/
-
 EXPOSE 9000
 
 CMD ["php-fpm"]
