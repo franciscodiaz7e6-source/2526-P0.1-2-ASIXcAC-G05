@@ -1,197 +1,151 @@
-# TODOS LAS VARIABLES EN ESTE DOCUMENTO SON PLANTILLAS, REVISAR EL DOCUMENTO DE EJEMPLO DE VARIABLES ANTES
-# DE UTILIZAR
 version: '3.9'
 
 services:
-  # NGINX PROXY - Entrada pública (Puerto 80)
-  nginx-proxy:
+  # ============================================
+  # NGINX - Reverse Proxy & Load Balancer
+  # ============================================
+  nginx:
     build:
-      context: ./services/nginx
+      context: ./nginx
       dockerfile: Dockerfile
-    container_name: ${NGINX_CONTAINER}
+    container_name: extagram-nginx
+    restart: unless-stopped
     ports:
-      - "${NGINX_PORT}:80"
-    
+      - "80:80"
     volumes:
-      # Configuración nginx (read-only)
-      - ../../src/web/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ../../src/web/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # Archivos de configuración en /src/web
-      
-      # Aplicación PHP (read-only)
-      - ../../src/web/php-app:/app:ro     
-      # Nginx sirve extagram.php desde aquí
-
-      # Archivos estáticos
-      - ../../src/web/php-app/static:/static:ro
-      # CSS, SVG, imágenes disponibles
-      
-      # Uploads
+      # Configuracion
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      # Codigo PHP
+      - ../src/web/php:/app:ro
+      # Archivos estaticos
+      - ../src/web/static/css:/static/css:rw
+      - ../src/web/static/js:/static/js:rw
+      - ../src/web/static/images:/static/images:rw
+      # Uploads (para servir fotos)
       - ./volumes/uploads:/uploads:ro
-      # Fotos subidas (read-only)
-    
     depends_on:
       - php-app-1
       - php-app-2
-      - upload-service
-      - storage-service
-    # Espera que estos servicios estén UP antes de iniciar
-    
+      - php-upload
+      - storage
     networks:
-      - ${NETWORK_NAME}
-    # Red interna para comunicación con PHP
-    
-    restart: unless-stopped
-    # Reinicia automáticamente si falla
+      - extagram-net
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-
-  # PHP-FPM APP 1 - Instancia de aplicación
+  # ============================================
+  # PHP-FPM - Instancia 1 (Lectura)
+  # ============================================
   php-app-1:
     build:
-      context: ./services/php-app
+      context: ./php
       dockerfile: Dockerfile
-    container_name: ${PHP_APP_1_CONTAINER}
-    
+    container_name: extagram-php-1
+    restart: unless-stopped
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - DB_NAME=${DB_NAME}
-    # Variables para conectar a MySQL
-    
+      DB_HOST: mysql
+      DB_NAME: extagram_db
+      DB_USER: extagram_user
+      DB_PASS: secure_password_123
     volumes:
-      - ../../src/web/php-app:/app:ro
-    # Código PHP leído desde ../src/ (read-only)
-    
+      - ../src/web/php:/app:ro
     depends_on:
       - mysql
-    # MySQL debe estar UP antes
-    
     networks:
-      - ${NETWORK_NAME}
-    # Accesible por nginx-proxy via upstream
-    
-    restart: unless-stopped
+      - extagram-net
 
-
-  # PHP-FPM APP 2 - Redundancia y balanceo de carga
+  # ============================================
+  # PHP-FPM - Instancia 2 (Lectura)
+  # ============================================
   php-app-2:
     build:
-      context: ./services/php-app
+      context: ./php
       dockerfile: Dockerfile
-    container_name: ${PHP_APP_2_CONTAINER}
-    
+    container_name: extagram-php-2
+    restart: unless-stopped
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - DB_NAME=${DB_NAME}
-    # Variables para conectar a MySQL
-    
+      DB_HOST: mysql
+      DB_NAME: extagram_db
+      DB_USER: extagram_user
+      DB_PASS: secure_password_123
     volumes:
-      - ../../src/web/php-app:/app:ro
-    # Código PHP leído desde ../src/ (read-only)
-    
+      - ../src/web/php:/app:ro
     depends_on:
       - mysql
-    # MySQL debe estar UP antes
-    
     networks:
-      - ${NETWORK_NAME}
-    # Accesible por nginx-proxy via upstream
-    
-    restart: unless-stopped
+      - extagram-net
 
-
-  # UPLOAD SERVICE - Recibe y guarda fotos
-  upload-service:
+  # ============================================
+  # PHP-FPM - Upload (Escritura en /uploads)
+  # ============================================
+  php-upload:
     build:
-      context: ./services/php-app
+      context: ./php
       dockerfile: Dockerfile
-    container_name: ${UPLOAD_CONTAINER}
-    
+    container_name: extagram-php-upload
+    restart: unless-stopped
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - DB_NAME=${DB_NAME}
-    # Variables para conectar a MySQL
-    
+      DB_HOST: mysql
+      DB_NAME: extagram_db
+      DB_USER: extagram_user
+      DB_PASS: secure_password_123
     volumes:
-      - ../../src/web/php-app:/app:ro
-      # Ejecuta upload.php
-      
+      - ../src/web/php:/app:ro
       - ./volumes/uploads:/uploads:rw
-      # Permisos WRITE (único servicio que guarda fotos)
-    
     depends_on:
       - mysql
-    # MySQL debe estar UP antes
-    
     networks:
-      - ${NETWORK_NAME}
-    # Accesible por nginx-proxy
-    
+      - extagram-net
+
+  # ============================================
+  # NGINX - Storage (Sirve archivos estaticos)
+  # ============================================
+  storage:
+    image: nginx:alpine
+    container_name: extagram-storage
     restart: unless-stopped
-
-
-  # STORAGE SERVICE - Sirve archivos estáticos
-  storage-service:
-    image: nginx:alpine    
-    container_name: ${STORAGE_CONTAINER}
-    
     volumes:
-      - ../../src/web/static:/static:ro
-      # CSS, SVG, preview (read-only)
-      
-      - ./volumes/uploads:/uploads:ro
-      # Fotos ya subidas (read-only para lectura)
-    
+      - ../src/web/static:/usr/share/nginx/html:rw
+      - ./volumes/uploads:/usr/share/nginx/html/uploads:rw
     networks:
-      - ${NETWORK_NAME}
-    # Accesible por nginx-proxy
-    
-    restart: unless-stopped
+      - extagram-net
 
-
-  # MYSQL DATABASE - Persistencia de datos
+  # ============================================
+  # MySQL 8.0 - Base de Datos
+  # ============================================
   mysql:
-    image: mysql:8.0    
-    container_name: ${MYSQL_CONTAINER}
-    
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    # Variables de configuración MySQL desde .env
-    
-    volumes:
-      - mysql-volume:/var/lib/mysql
-      # Volumen persistente (datos NO se pierden)
-      
-      -../../src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-      # Script SQL inicial (solo si BD vacía)
-    
-    networks:
-      - ${NETWORK_NAME}
-    # Accesible por php-apps via hostname "mysql"
-    
+    image: mysql:8.0
+    container_name: extagram-mysql
     restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secure_123
+      MYSQL_DATABASE: extagram_db
+      MYSQL_USER: extagram_user
+      MYSQL_PASSWORD: secure_password_123
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - extagram-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-
-# VOLÚMENES - Persistencia de datos
+# ============================================
+# VOLUMENES - Persistencia
+# ============================================
 volumes:
-  mysql-volume:
-    # Volumen persistente para MySQL
-    # Ubicación: /var/lib/docker/volumes/mysql-volume/_data/
-    # No se pierde con docker-compose down
-    # Se pierde con docker volume prune
+  mysql-data:
+    driver: local
 
-
-# RED INTERNA - Comunicación entre servicios
+# ============================================
+# RED INTERNA
+# ============================================
 networks:
   extagram-net:
     driver: bridge
-    # Red privada, no accesible desde host
-    # DNS automático: mysql, php-app-1, php-app-2, etc.
