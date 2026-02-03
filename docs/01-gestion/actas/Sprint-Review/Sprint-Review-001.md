@@ -42,15 +42,9 @@
 - El formato del acta fue aceptado y se usará en el resto del proyecto 
 
 ### **Millores proposades:**
-- Escribir el título de cada tarea, además de su nombre. 
+- Escribir el título de cada tarea, además de su nombre.
+- Avanzar con el MVP en una sola instancia dAWS
 
-**Captura de pantalla del Proofhub:**  
-- Backlog del proofhub (16/12/25) 
-- Primer sprint (19/01/26) 
-
-## **_Accions Pendent_**
-
-- Accions pendents 1 
-- Accions pendents 2 
-
-***
+<div align="center">
+  <img src="../../../../media/erick/proofhub_sprint1.png" alt="Captura de pantalla del proofhub">
+</div>

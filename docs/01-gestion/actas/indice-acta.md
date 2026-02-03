@@ -18,7 +18,3 @@
 [![Índice Principal]](../../../README.md)
 
 ---
-
-**Última actualización:** 27 Enero 2026  
-**Total actas:** 6 documentos  
-**Subcarpetas:** 2 carpetas organizadas
