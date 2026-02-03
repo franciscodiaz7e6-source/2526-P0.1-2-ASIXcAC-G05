@@ -1,25 +1,51 @@
 <?php
 if (!empty($_POST["post"])) {
+    // Variables de entorno
+    $host = getenv('DB_HOST') ?: 'mysql';
+    $db = getenv('DB_NAME') ?: 'extagram_db';
+    $user = getenv('DB_USER') ?: 'extagram_user';
+    $pass = getenv('DB_PASS') ?: 'secure_password_123';
+    
     $photoid = '';
     
-    if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] == 0) {
-        $photoid = uniqid() . '.' . pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-        move_uploaded_file($_FILES['photo']['tmp_name'], '/uploads/' . $photoid);
+    // Procesar foto si existe
+    if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
+        $uploadDir = '/uploads/';
+        $photoid = uniqid() . '.jpg';
+        $target = $uploadDir . $photoid;
+        
+        // Log para debugging
+        error_log("Upload attempt: " . $_FILES['photo']['tmp_name'] . " to " . $target);
+        
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target)) {
+            chmod($target, 0644);
+            error_log("Upload SUCCESS: $photoid");
+        } else {
+            error_log("Upload FAIL for: " . $_FILES['photo']['tmp_name']);
+            $photoid = '';
+        }
     }
-
-    $db = new mysqli(
-        getenv('DB_HOST') ?: 'mysql',
-        getenv('DB_USER') ?: 'extagram_admin',
-        getenv('DB_PASS') ?: 'pass123',
-        getenv('DB_NAME') ?: 'extagram_db'
-    );
-
-    $stmt = $db->prepare("INSERT INTO posts (post, photourl) VALUES (?, ?)");
-    $stmt->bind_param("ss", $_POST["post"], $photoid);
-    $stmt->execute();
-    $stmt->close();
-    $db->close();
+    
+    // Guardar en base de datos
+    try {
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        $stmt = $conn->prepare("INSERT INTO posts (post, photourl) VALUES (:post, :photourl)");
+        $stmt->execute([
+            ':post' => $_POST["post"],
+            ':photourl' => $photoid
+        ]);
+        
+        error_log("Post saved successfully. ID: " . $conn->lastInsertId());
+        
+    } catch(PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+    }
+    
+    $conn = null;
 }
 
-header("Location: /");
+header("Location: /extagram.php");
+exit;
 ?>
