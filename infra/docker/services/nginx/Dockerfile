@@ -1,11 +1,20 @@
-FROM php:8.2-fpm-alpine
+FROM nginx:alpine
 
-RUN apk add --no-cache \
-    mysql-client \
-    && docker-php-ext-install mysqli pdo pdo_mysql
+# Instalar wget
+RUN apk add --no-cache wget
 
-WORKDIR /app
+# Crear directorios
+RUN mkdir -p /app /uploads /static/css /static/js /static/images
 
-EXPOSE 9000
+# Crear directorios de caché con permisos
+RUN mkdir -p /var/cache/nginx/client_temp \
+             /var/cache/nginx/proxy_temp \
+             /var/cache/nginx/fastcgi_temp \
+             /var/cache/nginx/uwsgi_temp \
+             /var/cache/nginx/scgi_temp && \
+    chown -R nginx:nginx /var/cache/nginx /app /uploads /static && \
+    chmod -R 755 /var/cache/nginx
 
-CMD ["php-fpm"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
