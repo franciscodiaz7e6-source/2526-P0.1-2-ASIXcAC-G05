@@ -1,19 +1,4 @@
 <?php
-// Obtener variables de entorno
-$host = getenv('DB_HOST') ?: 'mysql';
-$db = getenv('DB_NAME') ?: 'extagram_db';
-$user = getenv('DB_USER') ?: 'extagram_user';
-$pass = getenv('DB_PASS') ?: 'secure_password_123';
-
-// Conexión MySQL con PDO
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
-}
-?>
-<?php
 $host = getenv('DB_HOST') ?: 'mysql';
 $db = getenv('DB_NAME') ?: 'extagram_db';
 $user = getenv('DB_USER') ?: 'extagram_user';
@@ -31,27 +16,6 @@ $msgType = $_GET['type'] ?? 'success';
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extagram</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>📱 Extagram</h1>
-        </header>
-        
-        <!-- Formulario de publicación -->
-        <form method="post" action="upload.php" enctype="multipart/form-data" class="post-form">
-            <textarea name="post" placeholder="¿Qué estás pensando?" rows="3" required></textarea>
-            <div class="form-actions">
-                <input type="file" name="photo" accept="image/*" id="photoInput">
-                <button type="submit">📤 Publicar</button>
-            </div>
-        </form>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -105,35 +69,6 @@ $msgType = $_GET['type'] ?? 'success';
                 </form>
             </div>
 
-        <!-- Feed de posts -->
-        <div class="feed">
-            <?php
-            try {
-                $stmt = $conn->query("SELECT * FROM posts ORDER BY created_at DESC LIMIT 20");
-                
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<div class='post'>";
-                    echo "<p>" . htmlspecialchars($row['post']) . "</p>";
-                    
-                    if (!empty($row['photourl'])) {
-                        echo "<img src='/uploads/" . htmlspecialchars($row['photourl']) . "' alt='Foto' class='post-image'>";
-                    }
-                    
-                    echo "<small class='post-date'>🕒 " . $row['created_at'] . "</small>";
-                    echo "</div>";
-                }
-            } catch(PDOException $e) {
-                echo "<div class='error'>Error al cargar posts: " . $e->getMessage() . "</div>";
-            }
-            
-            $conn = null;
-            ?>
-        </div>
-    </div>
-    
-    <script src="/js/app.js"></script>
-</body>
-</html>
             <div class="board-grid">
                 <?php
                 try {

@@ -1,4 +1,16 @@
 <?php
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', '/proc/self/fd/2'); // STDERR para Docker logs
+
+error_log("=== DEBUG upload.php START ===");
+error_log("REQUEST_METHOD=" . ($_SERVER['REQUEST_METHOD'] ?? 'NONE'));
+error_log("FILES=" . print_r($_FILES, true));
+error_log("POST=" . print_r($_POST, true));
+
 if (!empty($_POST["post"])) {
     // Variables de entorno
     $host = getenv('DB_HOST') ?: 'mysql';

@@ -19,6 +19,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     gd \
     zip
 
+RUN mkdir -p /uploads && \
+    chown -R www-data:www-data /uploads && \
+    chmod -R 775 /uploads
+
 # Configurar PHP
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 

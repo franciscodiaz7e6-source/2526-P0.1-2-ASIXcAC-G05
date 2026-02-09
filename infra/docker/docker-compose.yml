@@ -98,7 +98,7 @@ services:
       PHP_MAX_EXECUTION_TIME: ${PHP_MAX_EXECUTION_TIME}
     volumes:
       - ../src/web/php:/app:ro
-      - images-data:/uploads:rw
+      - images-data:/uploads
     depends_on:
       - s7-mysql
     networks:
