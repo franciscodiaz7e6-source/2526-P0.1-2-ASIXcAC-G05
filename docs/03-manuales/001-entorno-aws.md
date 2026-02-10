@@ -683,5 +683,4 @@ Causas comunes:
 Solucion: Esperar 5-10 minutos en primer arranque.
 
 ---
-
-Documentacion con fines instructivos
+[HOME](../../README.md)
