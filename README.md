@@ -5,9 +5,7 @@
 Grupo G05 - ASIXcAC
 
 - Francisco Díaz Encalada
-
 - Erick García Badaraco
-
 - Adrià Montero Sánchez
 
 ## Indice Principal
