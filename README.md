@@ -22,3 +22,10 @@ Grupo G05 - ASIXcAC
 ## Descripción del Proyecto
 Extagram es el proyecto académico del módulo ASIXcAC (Administració de Sistemes i Xarxes) del Institut Tecnològic de Barcelona (ITB), curso 2025-2026.
 - Objetivo: Desplegar una aplicación web Extagram (similar a Instagram) usando 7 contenedores Docker con arquitectura LEMP de alta disponibilidad, cumpliendo la rúbrica oficial P0.1/P0.2.
+
+## Funcionalidades
+- Upload de imágenes con metadatos (nombre, extensión, MIME).
+- Masonry layout responsive (CSS Columns).
+- Tiempo real (JS actualiza "Hace X horas").
+- Validación frontend (tamaño, tipo de archivo).
+- Alta disponibilidad (S2/S3 load balanced).
