@@ -11,8 +11,3 @@
 
 ## **Índice Principal**
 [HOME](../../README.md)
-
----
-
-**Total documentos:** 2 informes de pruebas  
-**Última actualización:** 27 Enero 2026
