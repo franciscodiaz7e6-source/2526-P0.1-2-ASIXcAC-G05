@@ -187,7 +187,7 @@ volumes:
     # Ubicación: /var/lib/docker/volumes/mysql-volume/_data/
     # No se pierde con docker-compose down
     # Se pierde con docker volume prune
-
+  images-data:
 
 # RED INTERNA - Comunicación entre servicios
 networks:
