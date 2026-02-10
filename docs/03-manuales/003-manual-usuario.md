@@ -60,12 +60,10 @@ Extagram utiliza 6 contenedores Docker:
 
 ### Navegadores Recomendados
 
-- 🟢 **Google Chrome** (Versión 90 o superior)
-- 🟢 **Mozilla Firefox** (Versión 88 o superior)
-- 🟢 **Safari** (Versión 14 o superior)
-- 🟢 **Microsoft Edge** (Versión 90 o superior)
-
-⚠️ **Nota**: Internet Explorer NO es compatible.
+- **Google Chrome** (Versión 90 o superior)
+- **Mozilla Firefox** (Versión 88 o superior)
+- **Safari** (Versión 14 o superior)
+- **Microsoft Edge** (Versión 90 o superior)
 
 ---
 
