@@ -29,34 +29,23 @@
 | 4.3 | Hardening Sistema Operativo (S1–S7) | Actualización, deshabilitación servicios no esenciales, configuración de seguridad básica |	DevOps / Infraestructura | 2:00 |
 | 4.4 | Hardening Base de Datos MySQL (S7) | Securizar MySQL, eliminar usuarios innecesarios, restringir accesos y activar auditoría | DBA / DevOps | 3:00 |
 | 4.5 | Validación de Seguridad y Documentación |	Pruebas de funcionamiento, pruebas de ataques controlados, documentación de cambios | Equipo Completo | 2:00 |
-📉 Definición de Hecho (DoD)
 
-Todos los firewalls configurados y validados funcionalmente.
+---
 
-Reglas WAF en funcionamiento y probadas con casos de prueba OWASP.
+## Métricas del Sprint 4
 
-Hardening documentado por nodo / sistema, con checklist de cambios y versiones.
+| Métrica                     | Valor                       |
+| --------------------------- | --------------------------- |
+| Total de Tareas Principales | 5                           |
+| Tareas Completadas          | —                           |
+| Horas Planificadas          | 13:00                       |
+| Horas Registradas           | —                           |
+| Riesgos Identificados       | Ninguno bloqueador previsto |
+| Dependencias                | Nodo S1/SG existente        |
 
-Validación de pruebas de seguridad sin errores bloqueadores.
 
-📊 Métricas del Sprint 4
-Métrica	Valor
-Total de Tareas Principales	5
-Tareas Completadas	—
-Horas Planificadas	13:00
-Horas Registradas	—
-Riesgos Identificados	Ninguno bloqueador previsto
-Dependencias	Nodo S1/SG existente
-🧾 Entregables Esperados
+## Entregables del Sprint 4
 
-Security Group y WAF configurado.
-
-Hardening OS y MySQL según checklist.
-
-Documentación técnica en Markdown subida al repositorio.
-
-Informe de pruebas de seguridad.
-
-🤝 Compromisos y Notas
-
-El equipo se compromete a completar las tareas según la capacidad definida (lunes bloques de 3h para trabajos técnicos, martes bloques de 2h para pruebas y ajustes) y documentarlas adecuadamente para la revisión.
+- Security Group y WAF configurado.
+- Hardening OS y MySQL según checklist.
+- Documentación técnica en Markdown subida al repositorio.
