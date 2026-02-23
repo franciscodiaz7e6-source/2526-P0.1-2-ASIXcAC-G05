@@ -1,4 +1,4 @@
-# Acta de Sprint Review - Sprint 1
+# Acta de Sprint Planning - Sprint 1
 
 ## Información General
 
@@ -6,7 +6,7 @@
 **Fechas del sprint:** 16 de diciembre de 2025 15:00 - 19 de enero de 2026 15:00  
 
 **Fecha:** 19 de enero de 2026 15:00  
-**Reunión:** Sprint Review  
+**Reunión:** Sprint Planning  
 
 **Asistentes:**
 - Erick García Badaraco
@@ -246,7 +246,3 @@
 El equipo mostró excelente coordinación y conocimiento compartido. Todas las tareas se completaron dentro del timeline establecido. La documentación está lista para servir como base técnica sólida para el siguiente sprint. Los roles han sido claramente definidos y aceptados por todos los miembros. Sprint 2 puede proceder sin impedimentos técnicos ni organizacionales.
 
 ---
-
-**Documento completado:** 19 de enero de 2026  
-**Versión:** 1.0  
-**Estado:** Aprobado
