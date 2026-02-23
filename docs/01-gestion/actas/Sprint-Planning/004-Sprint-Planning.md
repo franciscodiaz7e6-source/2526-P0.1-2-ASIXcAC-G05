@@ -21,7 +21,9 @@
 ---
 
 **Tareas Planificadas para el Sprint**
+
 | Tarea	| Título | Descripción |	Propietarios |	Horas Estimadas |
+|-------|--------|-------------|---------------|------------------|
 | 4.1 | Implementación Firewall S1 | Configurar Security Groups y reglas restrictivas delante del nodo S1 para tráfico HTTP, HTTPS y control de acceso seguro	| Equipo DevOps | 3:00 |
 | 4.2 | Implementación WAF | Despliegue de WAF (AWS o ModSecurity) con reglas OWASP y mitigaciones de ataques web | Equipo DevOps |	3:00 |
 | 4.3 | Hardening Sistema Operativo (S1–S7) | Actualización, deshabilitación servicios no esenciales, configuración de seguridad básica |	DevOps / Infraestructura | 2:00 |
