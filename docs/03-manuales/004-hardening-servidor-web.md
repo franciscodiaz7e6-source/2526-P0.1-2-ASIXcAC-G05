@@ -146,3 +146,5 @@ docker exec s1-nginx tail -10000 /var/log/nginx/access.log | awk -F'|' '{print $
 - Logs Rotación: Automática diaria (14 días gzipped).
 - Update CRS: docker exec s1-nginx git -C /etc/nginx/owasp-crs/coreruleset pull.
 - Rollback: docker-compose down && git checkout HEAD~1 ./nginx/.
+
+que es esto caumsa, porque hardening que da muy generalista
