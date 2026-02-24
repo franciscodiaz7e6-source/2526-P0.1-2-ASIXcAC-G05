@@ -280,3 +280,5 @@ Desventajas:
 - Latencia inicial alta (crear proceso toma tiempo)
 - Mucho overhead de creacion/destruccion
 - Inadecuado para trafico constante
+
+[Indice Principal de Arquitectura](./000-indice-arquitectura.md)

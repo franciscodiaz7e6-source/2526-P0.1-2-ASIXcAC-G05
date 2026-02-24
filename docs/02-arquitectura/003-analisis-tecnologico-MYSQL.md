@@ -881,3 +881,5 @@ MongoDB 6.0:
 [1] **MySQL 8.0 Official Documentation - InnoDB Storage Engine**  
 URL: https://dev.mysql.com/doc/refman/8.0/en/innodb.html  
 ---
+
+[Indice Principal de Arquitectura](./000-indice-arquitectura.md)

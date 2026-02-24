@@ -17,5 +17,3 @@
 
 ## **Índice Principal**
 [Home Principal](../../../README.md)
-
----

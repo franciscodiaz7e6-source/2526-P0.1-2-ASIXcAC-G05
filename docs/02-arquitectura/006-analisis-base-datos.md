@@ -1100,19 +1100,9 @@ URL: https://dev.mysql.com/doc/refman/8.0/en/innodb.html
  MySQL 8.0 Replication Official Documentation [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/108224119/84af9c1e-ecfd-470e-ab69-b3405bd1c81b/Rubrica_Alumnes_ASIXc2_Projecte_P0.1_P0.2-Rubrica_P0.1_P0.2.pdf)
 URL: https://dev.mysql.com/doc/refman/8.0/en/replication.html
 
- AWS RDS MySQL Best Practices [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/108224119/1f4e0589-e04e-48b1-920f-00aef39ba827/sample_import.csv)
-URL: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_MySQL.html
-
- PostgreSQL vs MySQL Performance Comparison (2024) [notes.kodekloud](https://notes.kodekloud.com/docs/Nginx-For-Beginners/Introduction/Nginx-Architecture)
-URL: https://www.postgresql.org/about/featurematrix/
-
- MongoDB Memory Consumption on Small Instances [hostinger](https://www.hostinger.com/tutorials/nginx-vs-apache)
-URL: https://docs.mongodb.com/manual/reference/limits-and-thresholds/
-
- ACID Transactions in InnoDB [stackoverflow](https://stackoverflow.com/questions/15394904/nginx-load-balance-with-upstream-ssl)
-URL: https://dev.mysql.com/doc/refman/8.0/en/commit.html
-
  MySQL Foreign Keys - Referential Integrity [linkedin](https://www.linkedin.com/posts/harisha-warnakulasuriya-_1-event-driven-asynchronous-architecture-activity-7325163399183523842-CblZ)
 URL: https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html
 
 ***
+
+[Indice Principal de Arquitectura](./000-indice-arquitectura.md)

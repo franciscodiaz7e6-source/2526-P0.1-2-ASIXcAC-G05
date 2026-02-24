@@ -376,3 +376,5 @@ Basado en el análisis anterior, **Nginx es la elección óptima para Extagram**
 | **Seguridad** | MEDIO-ALTO | Ocultación de backends, rate limiting integrado. |
 
 ---
+
+[Indice Principal de Arquitectura](./000-indice-arquitectura.md)

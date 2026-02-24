@@ -106,3 +106,5 @@
 [https://photutorial.com/flickr-statistics/](https://photutorial.com/flickr-statistics/) (Flickr ~60M)​  
 [https://www.semrush.com/website/imgur.com/overview/](https://www.semrush.com/website/imgur.com/overview/) (Imgur tráfico ~130M)​  
 [https://en.wikipedia.org/wiki/Google_Photos](https://en.wikipedia.org/wiki/Google_Photos) (Google Photos ~500M estimado)​ 
+
+[Indice Principal de Arquitectura](./000-indice-arquitectura.md)
