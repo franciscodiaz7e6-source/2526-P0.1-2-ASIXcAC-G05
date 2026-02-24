@@ -10,7 +10,6 @@
 **Asistentes:**
 - Erick García Badaraco
 - Francisco Díaz Encalada
-- Adrià Montero Sánchez
 
 ---
 
