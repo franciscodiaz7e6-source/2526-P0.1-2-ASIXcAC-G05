@@ -246,3 +246,4 @@
 El equipo mostró excelente coordinación y conocimiento compartido. Todas las tareas se completaron dentro del timeline establecido. La documentación está lista para servir como base técnica sólida para el siguiente sprint. Los roles han sido claramente definidos y aceptados por todos los miembros. Sprint 2 puede proceder sin impedimentos técnicos ni organizacionales.
 
 ---
+[Volver al Indice de Actas](../indice-acta.md)

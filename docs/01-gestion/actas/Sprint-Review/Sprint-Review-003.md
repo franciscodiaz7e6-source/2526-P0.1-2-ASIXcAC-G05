@@ -65,3 +65,5 @@ _[Espacio para mejoras propuestas por el docente]_
 - Realizar pruebas de redundancia simulando caídas de nodos
 - Completar documentación técnica exhaustiva (arquitectura, instalación, troubleshooting)
 - Documentar lecciones aprendidas del Sprint 3
+
+[Volver al Indice de Actas](../indice-acta.md)

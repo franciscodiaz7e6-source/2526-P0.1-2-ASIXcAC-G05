@@ -231,3 +231,5 @@ El Sprint 1 ha dejado la base sólida para que Sprint 2 pueda enfocarse en:
 **Estado:** ✅ Sprint completado exitosamente  
 **Proyecto:** 2526-P0.1/2-ASIXcAC-G05 - Institut Tecnològic de Barcelona  
 **Fecha de creación de acta actual:** 03/02/2026 (Sprint Review tardío con datos históricos)
+
+[Volver al Indice de Actas](../indice-acta.md)

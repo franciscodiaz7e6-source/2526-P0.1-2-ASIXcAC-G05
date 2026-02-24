@@ -155,3 +155,5 @@ El Sprint 2 ha preparado la base para el Sprint 3 que incluirá:
 5. **Documentación final** y cierre del proyecto P0.1
 
 ---
+
+[Volver al Indice de Actas](../indice-acta.md)
