@@ -49,4 +49,6 @@
 - Hardening OS y MySQL según checklist.
 - Documentación técnica en Markdown subida al repositorio.
 
-[Volver al Indice de Actas](../indice-acta.md)
+---
+
+[Indice de Actas](../indice-acta.md)

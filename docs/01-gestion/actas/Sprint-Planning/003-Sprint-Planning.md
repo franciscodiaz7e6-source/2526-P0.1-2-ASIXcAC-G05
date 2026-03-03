@@ -57,3 +57,6 @@
 - Pruebas de redundancia validadas con failover documentado.
 - Documentación técnica completa en Markdown subida al repositorio.
 
+---
+
+[Indice de Actas](../indice-acta.md)

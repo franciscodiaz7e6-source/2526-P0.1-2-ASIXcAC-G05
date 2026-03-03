@@ -391,8 +391,4 @@ El equipo ejecutó todas las tareas con excelencia técnica. La arquitectura est
 
 ---
 
-**Documento completado:** 2 de febrero de 2026  
-**Versión:** 1.0  
-**Estado:** Aprobado
-
-[Volver al Indice de Actas](../indice-acta.md)
+[Indice de Actas](../indice-acta.md)

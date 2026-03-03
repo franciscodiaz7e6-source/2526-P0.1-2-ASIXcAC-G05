@@ -156,4 +156,4 @@ El Sprint 2 ha preparado la base para el Sprint 3 que incluirá:
 
 ---
 
-[Volver al Indice de Actas](../indice-acta.md)
+[Indice de Actas](../indice-acta.md)

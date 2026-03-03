@@ -225,11 +225,4 @@ El Sprint 1 ha dejado la base sólida para que Sprint 2 pueda enfocarse en:
 
 ---
 
-**Documento generado:** 19/01/2026  
-**Versión:** 1.0  
-**Sprint:** 1 - Fase de Organización  
-**Estado:** ✅ Sprint completado exitosamente  
-**Proyecto:** 2526-P0.1/2-ASIXcAC-G05 - Institut Tecnològic de Barcelona  
-**Fecha de creación de acta actual:** 03/02/2026 (Sprint Review tardío con datos históricos)
-
-[Volver al Indice de Actas](../indice-acta.md)
+[Indice de Actas](../indice-acta.md)

@@ -35,20 +35,6 @@
 
 ---
 
-## Feedback del Docente
-
-### Comentarios positivos:
-
-_[Espacio para comentarios positivos del docente]_
-
----
-
-### Mejoras propuesadas:
-
-_[Espacio para mejoras propuestas por el docente]_
-
----
-
 ### Captura de pantalla del ProofHub:
 
 <div align="center">
@@ -66,4 +52,6 @@ _[Espacio para mejoras propuestas por el docente]_
 - Completar documentación técnica exhaustiva (arquitectura, instalación, troubleshooting)
 - Documentar lecciones aprendidas del Sprint 3
 
-[Volver al Indice de Actas](../indice-acta.md)
+---
+
+[Indice de Actas](../indice-acta.md)
