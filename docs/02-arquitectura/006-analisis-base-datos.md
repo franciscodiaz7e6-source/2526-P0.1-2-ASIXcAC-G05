@@ -1,7 +1,5 @@
 # MYSQL - ARQUITECTURA, COMPARATIVA Y VIABILIDAD PARA EXTAGRAM
 
-***
-
 ## TABLA DE CONTENIDOS
 
 1. [Anatomía y Arquitectura de MySQL](#1-anatomía-y-arquitectura-de-mysql-80)
