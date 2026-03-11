@@ -1,7 +1,5 @@
 # DOCKER - ARQUITECTURA, COMPARATIVA Y VIABILIDAD PARA EXTAGRAM
 
----
-
 ## TABLA DE CONTENIDOS
 
 1. [Anatomía y Arquitectura de Docker](#1-anatomía-y-arquitectura-de-docker)
