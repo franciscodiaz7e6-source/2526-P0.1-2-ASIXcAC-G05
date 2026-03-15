@@ -9,8 +9,5 @@
 | **003-manual-usuario.md** | Guía de uso, características y solución de problemas | [Leer →](./003-manual-usuario.md) |
 
 ---
-
-## **Índice Principal**
 [HOME](../../README.md)
-
 ---
